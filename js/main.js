@@ -1,20 +1,10 @@
-
 // 1 nơi duy nhất thêm sửa xóa
-
 const SINHVIEN_LOCAL = "sinhVienLocal"
-var danhSachSinhVienArr = [];
 
-// getItem take data from local storage
-var json = localStorage.getItem(SINHVIEN_LOCAL);
-console.log("json", json);
-
-// parse json -> array
-if (json !== null) {
-  danhSachSinhVienArr = JSON.parse(json);
+var danhSachSinhVienArr = getLocalSV(SINHVIEN_LOCAL);
+if (danhSachSinhVienArr !== null) {
   renderDanhSachSinhVien(danhSachSinhVienArr);
 }
-
-
 
 var themSinhVien = () => {
   console.log("them sinh vien");
@@ -29,27 +19,20 @@ var themSinhVien = () => {
     validatorSV.kiemtraRong(newSinhVien.hoa, "spanHoa", "Truong nay khong duoc rong") &
     validatorSV.kiemtraRong(newSinhVien.id, "spanMaSV", "Truong nay khong duoc rong");
 
-
   isValid = isValid && validatorSV.kiemTraTrungId(newSinhVien.id, danhSachSinhVienArr) &&
     validatorSV.kiemTraEmail(newSinhVien.email, "spanEmailSV")
-  
-  
+
   console.log("isValid", isValid);
 
-
-
-  if (validatorSV) {
+  if (isValid) {
     danhSachSinhVienArr.push(newSinhVien);
 
-    // stringify array -> json
-    var dsJson = JSON.stringify(danhSachSinhVienArr);
-    localStorage.setItem("sinhVienLocal", dsJson);
-
-    console.log("dsJson", dsJson);
+    setLocalSV(danhSachSinhVienArr);
 
     renderDanhSachSinhVien(danhSachSinhVienArr);
 
     document.getElementById("formQLSV").reset();
+    document.getElementById("searchForm").reset();
   }
   console.log(danhSachSinhVienArr);
 }
@@ -60,14 +43,13 @@ var kiemTraViTri = function (id) {
   });
 }
 
-
 var xoaSinhVien = function (id) {
-  let index =
-    console.log("yes", id);
+  document.getElementById("spanMaSV").innerText = "";
+  document.getElementById("searchForm").reset();
+  let index = console.log("id xoa sinh vien", id);
 
   if (kiemTraViTri(id) !== -1) {
-
-    // nó chỉ lưu array mới xuống local storage, chứ ko có xóa trong local storage
+    // nó chỉ lưu array mới xuống local storage, ko xóa trong local storage
     // phương thức splice này sẽ thay đổi phần tử trong danhSachSinhVienArr
     danhSachSinhVienArr.splice(index, 1);
     var json = JSON.stringify(danhSachSinhVienArr);
@@ -77,7 +59,10 @@ var xoaSinhVien = function (id) {
 };
 
 var suaSinhVien = function (id) {
+  document.getElementById("spanMaSV").innerText = "";
+  document.getElementById("searchForm").reset();
   var index = kiemTraViTri(id);
+  console.log("id sua sinh vien", id);
   if (index !== -1) {
     var sv = danhSachSinhVienArr[index];
     console.log(sv);
@@ -92,12 +77,11 @@ var suaSinhVien = function (id) {
   document.getElementById("txtMaSV").disabled = true;
 };
 
-
-
-
-// cập nhật là sửa thông tin, render, và reset, lấy bỏ vào local storage
+// cập nhật: sửa thông tin, render, và reset, lưu xuống local storage
 // sửa trên data của code, load lại trang thì render từ local storage
 var capNhatSinhVien = function () {
+  document.getElementById("spanMaSV").innerText = "";
+  document.getElementById("searchForm").reset();
   var id = document.getElementById("txtMaSV").value;
   var index = kiemTraViTri(id);
   if (index !== -1) {
@@ -106,49 +90,31 @@ var capNhatSinhVien = function () {
 
     renderDanhSachSinhVien(danhSachSinhVienArr);
     document.getElementById("formQLSV").reset();
+    document.getElementById("searchForm").reset();
     document.getElementById("txtMaSV").disabled = false;
 
-    setLocalSV(danhSachSinhVienArr, dsJson);
+    setLocalSV(danhSachSinhVienArr);
   }
 
   console.log(danhSachSinhVienArr);
 }
 
 // search
-document.getElementById("txtSearch").addEventListener("keypress", () => {
-  var keyword = document.getElementById("txtSearch").value.trim();
-  console.log(keyword);
-  var arrResult = danhSachSinhVienArr.filter(sv => {
-    return sv.name.includes(keyword);
-  })
+var timSinhVien = function () {
+  document.getElementById("spanMaSV").innerText = "";
+  let value = document.getElementById("txtTimKiem").value.trim();
+  console.log("tim kiem", value);
+  sinhVienCanTim = danhSachSinhVienArr.filter(sv => sv.name.includes(value));
+  console.log("sinhVienCanTim", sinhVienCanTim);
+  if(sinhVienCanTim.length !== 0) 
+    renderDanhSachSinhVien(sinhVienCanTim);
+  else {
+    document.getElementById("spanTimKiem").innerText = "Khong tim thay sinh vien!"
+  }
+}
 
-  renderDanhSachSinhVien(arrResult);
-});
-
-
-var email = "ngohuycuong@gmail.com";
-var regrex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-var isEmailValid = string.match(email);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+var resetDanhSachSinhVien = function () {
+  document.getElementById("spanMaSV").innerText = "";
+  document.getElementById("searchForm").reset();
+  renderDanhSachSinhVien(danhSachSinhVienArr);
+}

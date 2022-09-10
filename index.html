@@ -54,16 +54,21 @@
 
           <div class="form-group text-center">
             <button type="button" onclick="themSinhVien()" class="btn btn-success">Thêm Sinh Viên</button>
-
-            <button type="button" onclick="" class="btn btn-dark">Reset</button>
             <button type="button" onclick="capNhatSinhVien()" class="btn btn-info">Cập Nhật</button>
           </div>
         </form>
-        <div class="row">
-          <div class="col-12 form-group">
-            <input placeholder="Nhập tên sinh viên" type="text" class="form-control" id="txtSearch">
+        <form action="" id="searchForm">
+          <div class="row">
+            <div class="col-12 form-group d-flex">
+              <input placeholder="Nhập tên sinh viên" id="txtTimKiem" type="text" class="form-control" id="txtSearch">
+              <button type="button" style="min-width: 100px;" onclick="timSinhVien()">Tìm kiếm</button>
+              <button type="button" style="min-width: 100px;" onclick="resetDanhSachSinhVien()">Reset</button>
+            </div>
           </div>
-        </div>
+          <div>
+            <span id="spanTimKiem" class="text-danger"></span>
+          </div>
+        </form>
       </div>
       <div class="col-8 mx-auto">
         <table class="table">
@@ -73,7 +78,7 @@
               <th>Tên Sinh Viên</th>
               <th>Email</th>
               <th>Điểm trung binh</th>
-              <th>Thao tac</th>
+              <th>Thao tác</th>
             </tr>
           </thead>
           <tbody id="tbodySinhVien">

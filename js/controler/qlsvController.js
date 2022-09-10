@@ -1,8 +1,4 @@
-
-
 var layThongTinTuForm = () => {
-  console.log("function lay thong tin tu form");
-
   var maSV = document.getElementById("txtMaSV").value;
   var ten = document.getElementById("txtTenSV").value;
   var email = document.getElementById("txtEmail").value;
@@ -11,11 +7,10 @@ var layThongTinTuForm = () => {
   var diemHoa = document.getElementById("txtDiemHoa").value;
 
   var sv = new SinhVien(maSV, ten, email, diemToan, diemLy, diemHoa);
-  console.log("sinh vien", sv);
+  console.log("lay thong tin tu form", sv);
 
   return sv;
 }
-
 
 var renderDanhSachSinhVien = (danhSachSinhVienArr) => {
   var contentHTML = "";
@@ -25,7 +20,7 @@ var renderDanhSachSinhVien = (danhSachSinhVienArr) => {
                         <td>${sinhVienHienTai.id}</td>
                         <td>${sinhVienHienTai.name}</td>
                         <td>${sinhVienHienTai.email}</td>
-                        <td>0</td>
+                        <td>${(sinhVienHienTai.toan * 1 + sinhVienHienTai.ly * 1 + sinhVienHienTai.hoa * 1) / 3}</td>
                         <td>
                           <button class="btn btn-success" onclick="suaSinhVien('${sinhVienHienTai.id}')">Sửa</button>
                           <button class="btn btn-danger" onclick="xoaSinhVien('${sinhVienHienTai.id}')">Xóa</button>
@@ -36,16 +31,12 @@ var renderDanhSachSinhVien = (danhSachSinhVienArr) => {
   document.getElementById("tbodySinhVien").innerHTML = contentHTML;
 };
 
-
 var setLocalSV = function (arr) {
   var json = JSON.stringify(arr);
   localStorage.setItem(SINHVIEN_LOCAL, json);
 };
 
-var getLocalSV = function () {
-  
+var getLocalSV = function (tenLocal) {
+  let doituongtronglocal = localStorage.getItem(tenLocal);
+  return JSON.parse(doituongtronglocal);
 }
-
-
-
-

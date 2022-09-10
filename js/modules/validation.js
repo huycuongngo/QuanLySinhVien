@@ -22,38 +22,15 @@ var validatorSV = {
       return false;
     }
   },
-  kiemTraEmail() {
-    // var regrex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    // var isValid = regrex.test(string);
-    
-    var isValid = validatorSV.isEmail(string);
-    
-    console.log("email", isValid);
-
-    // console.log(isValid);
+  kiemTraEmail(string, idError) {
+    var regrex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{3,}))$/;
+    var isValid = regrex.test(string);
+    // var isValid = isEmail(string);
+    // console.log("email", isValid);
     if (!isValid) {
-      document.getElementById("idErr").innerText = "Email khong hop le"
+      document.getElementById(idError).innerText = "Email khong hop le"
       return false;
     }
     return true;
   },
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
